@@ -6,7 +6,7 @@ import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/ex
 import {
     readConf, writeConf, shimLoaded, hookInstalled, installHook, removeHook,
     LIB_PATH, CONF_PATH, RESTART_NOTE,
-} from './extension.js';
+} from './common.js';
 
 export default class GascrollPrefs extends ExtensionPreferences {
     fillPreferencesWindow(window) {
