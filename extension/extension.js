@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: MIT
  */
 import GLib from 'gi://GLib';
-import {Extension} from 'resource:///org/gnome/Shell/Extensions/js/extensions/extension.js';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {CONF_PATH, DEFAULT_CONF, writeConf} from './common.js';
 
 export default class GascrollExtension extends Extension {

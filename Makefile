@@ -49,9 +49,9 @@ uninstall:
 clean:
 	rm -rf build
 
-test-prefs:                # regression test: prefs.js must import without Shell-only resources
+test-imports:              # regression test: correct/incorrect extension resource paths
 	GI_TYPELIB_PATH=/usr/lib/gnome-shell/girepository-1.0 \
 	LD_LIBRARY_PATH=/usr/lib/gnome-shell \
-	gjs -m tests/prefs-import-test.mjs extension/prefs.js
+	gjs -m tests/prefs-import-test.mjs
 
-.PHONY: all test test-prefs install uninstall clean
+.PHONY: all test test-imports install uninstall clean
