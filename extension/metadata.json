@@ -1,0 +1,8 @@
+{
+  "uuid": "gascroll@ga",
+  "name": "Touchpad Scroll Speed (gascroll)",
+  "description": "调整触控板双指滚动速度（全局）。滑块写入 ~/.config/gascroll.conf，实际缩放由 LD_PRELOAD 的 libgascroll.so 完成——Wayland 下 Shell 扩展本身无法改变应用滚动量，所以扩展负责界面与安装。",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51"],
+  "url": "https://github.com/",
+  "gettext-domain": "gascroll"
+}

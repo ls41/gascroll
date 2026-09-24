@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# gascroll — tiny CLI around ~/.config/gascroll.conf
+#   gascroll set 0.25     change the factor (applies within a second, no re-login)
+#   gascroll get          show the current factor
+#   gascroll status       show config, hook and whether the library is loaded
+#   gascroll on|off       enable/disable scaling
+set -euo pipefail
+
+CONF="${GASCROLL_CONF:-$HOME/.config/gascroll.conf}"
+LIB="$HOME/.local/lib/libgascroll.so"
+DROPIN="$HOME/.config/systemd/user/org.gnome.Shell@.service.d/override.conf"
+
+usage() { sed -n '2,6p' "$0"; exit 1; }
+
+set_key() {  # set_key key value
+    touch "$CONF"
+    if grep -q "^$1=" "$CONF"; then
+        sed -i "s|^$1=.*|$1=$2|" "$CONF"
+    else
+        echo "$1=$2" >> "$CONF"
+    fi
+}
+
+cmd="${1:-}"; shift || true
+case "$cmd" in
+    set)
+        [ $# -eq 1 ] || usage
+        set_key factor "$1"
+        echo "factor=$1  (生效约 1 秒内，无需注销)"
+        ;;
+    get)    grep '^factor=' "$CONF" 2>/dev/null | cut -d= -f2 || echo 1.0 ;;
+    on)     set_key enabled 1; echo "enabled=1" ;;
+    off)    set_key enabled 0; echo "enabled=0 (立即停止缩放)" ;;
+    status)
+        echo "--- config ($CONF)"; cat "$CONF" 2>/dev/null || echo "(不存在)"
+        echo "--- hook   ($DROPIN)"; cat "$DROPIN" 2>/dev/null || echo "(未安装)"
+        echo "--- library ($LIB)"; [ -f "$LIB" ] && echo "存在" || echo "缺失"
+        if grep -q libgascroll "/proc/$(pgrep -x gnome-shell | head -1)/maps" 2>/dev/null; then
+            echo "--- 已注入当前会话"
+        else
+            echo "--- 未注入（需注销重登一次）"
+        fi
+        ;;
+    *) usage ;;
+esac

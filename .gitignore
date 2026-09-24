@@ -1,0 +1,6 @@
+build/
+extension/shim/gascroll.c
+*.so
+*.o
+*~
+selftest.conf
