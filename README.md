@@ -55,6 +55,23 @@ device=Touchpad    # 只对名字含该字样的设备生效；留空=所有设�
 
 卸载：`./uninstall.sh`（或 `--purge` 连库和配置一起删）。
 
+## Chrome 扩展（可选，只影响浏览器）
+
+`chrome-extension/` 是一个 MV3 扩展，按倍率**丢弃一部分 `wheel` 事件**——放行的都是原生事件，
+不自己滚动元素，所以不会破坏虚拟滚动/地图类网站。适合"系统层已经调好、但还想让浏览器再慢一点"的情况。
+
+1. `chrome://extensions` → 打开 **开发者模式**
+2. **加载已解压的扩展程序** → 选 `chrome-extension/` 目录
+3. 点扩展图标填倍率（`1.00`=不降速，`0.50`=滚一半）→ 立即生效，已开标签页按 `Ctrl+Shift+R` 刷新一次
+
+> **Flatpak 版 Chrome**：沙箱只挂载 `~/Downloads`、`~/Documents`、`~/Music`、`~/Pictures`、`~/Videos`，
+> 先把这个目录复制到其中之一再加载（详见 `chrome-extension/README.md`）。
+
+## 给 AI agent 的操作指引
+
+仓库根目录的 **`AGENTS.md`** 写给自动化/agent 看：安装、验证、调参、排障、验收清单，
+以及那些"踩过一次就再也不想踩"的坑（Wayland 下新扩展必须重登、两个资源路径的大小写、原子替换库文件等）。
+
 ## 注意 / 边界
 
 - **"不跟手"的 X11 应用（钉钉 / IDEA 等）无法变顺滑**：它们经 Xwayland，工具包只认离散滚轮步进，天生按格跳；本方案只能让它们变慢。
@@ -107,6 +124,28 @@ git clone https://github.com/ls41/gascroll && cd gascroll
 | Chrome only | `chrome-extension/` drops a fraction of wheel events |
 
 Uninstall with `./uninstall.sh` (or `--purge`).
+
+## Chrome extension (optional, browser-only)
+
+`chrome-extension/` is a small MV3 extension that **drops a fraction of `wheel` events**; every
+event that is forwarded stays a native event (nothing scrolls programmatically), so virtualised
+lists and map-like sites keep working. Useful when the global factor is already right but you want
+the browser a bit slower still.
+
+1. `chrome://extensions` → enable **Developer mode**
+2. **Load unpacked** → pick the `chrome-extension/` folder
+3. Click the toolbar icon and set the multiplier (`1.00` = untouched, `0.50` = half) — takes effect
+   immediately; reload already-open tabs once with `Ctrl+Shift+R`
+
+> **Flatpak Chrome**: the sandbox only mounts `~/Downloads`, `~/Documents`, `~/Music`, `~/Pictures`,
+> `~/Videos` — copy the folder into one of those first (details in `chrome-extension/README.md`).
+
+## For AI agents
+
+**`AGENTS.md`** in the repo root is written for automation/agents: install, verify, tune,
+troubleshoot and an acceptance checklist — plus the pitfalls worth never hitting twice
+(Wayland only discovers new extensions at session start, the two case-different resource paths,
+atomic replacement of the library while gnome-shell has it mapped, …).
 
 ## Notes / limits
 
